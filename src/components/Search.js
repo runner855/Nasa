@@ -1,32 +1,35 @@
 import React, { useState } from "react";
 import "../styles/Search.css";
+import PropTypes from "prop-types";
 import getImages from "../requests/getImages";
 
-const Search = () => {
-  // eslint-disable-next-line no-unused-vars
-  const [value, SetValue] = useState();
+const Search = ({ setSearchResults }) => {
+  const [value, setValue] = useState();
 
-  // eslint-disable-next-line no-unused-vars
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    getImages(value);
+    setSearchResults(await getImages(value));
   };
 
   return (
-    <div className="Search">
-      <form className="search-form">
+    <>
+      <form className="search-form" onSubmit={handleSubmit}>
         <input
           className="search-input"
           type="text"
-          // eslint-disable-next-line no-undef
           onChange={(e) => setValue(e.target.value)}
-        ></input>
+          placeholder={"Search your Nasa Image"}
+        />
         <button className="search-btn" type="submit">
           Go!
         </button>
       </form>
-    </div>
+    </>
   );
 };
 
 export default Search;
+
+Search.propTypes = {
+  setSearchResults: PropTypes.func.isRequired,
+};
